@@ -237,8 +237,8 @@ abstract class TWDocs {
       $params["mode"] = "link";
     } else {
       $class = "";
-      $base = $this->getBaseURI() ;
-      $uri = $base.$params["version"]."/".$params["href"];
+      $baseMedia = $this->getMediaURI() ;
+      $uri = $baseMedia."/".$params["version"]."/".$params["href"];
       $page = $this->getProperty($uri,"http://xmlns.com/foaf/0.1/page");
       if($page != null && count($page)>0) {
         $page = $page[0];
@@ -247,9 +247,8 @@ abstract class TWDocs {
         $arr = explode( "/", $uri ) ;
         if( count( $arr ) > 0 ) { 
           $oldName = $arr[count( $arr ) - 1] ;
-          $fulldir = "/var/www/html/tw.rpi.edu/media/files" ;
-          $fullpath = $fulldir."/latest/".$oldName ;
-          $actualuri = $base."latest/".$oldName ;
+          $baseInstance = $this->getInstanceURI();
+          $actualuri = $baseInstance."/latest/".$oldName ;
           $defaultdocpage = $this->getDefaultDocPage() ;
           $page = $defaultdocpage."?uri=$actualuri" ;
         }
@@ -330,7 +329,8 @@ abstract class TWDocs {
     $params = array('http' => array('method' => 'POST',
             'content' => $msg));
     $ctx = stream_context_create($params);
-    $ans = @file_get_contents($this->getApiURL(),false,$ctx);
+    $apiURL = $this->getApiURL();
+    $ans = @file_get_contents($apiURL,false,$ctx);
     $answer = @json_decode($ans);
     return $answer;
   }
@@ -347,8 +347,10 @@ abstract class TWDocs {
   // Settings
   public abstract function shouldDebug();
   public abstract function enableDebug($val);
-  public abstract function getBaseURI();
-  public abstract function setBaseURI($val);
+  public abstract function getMediaURI();
+  public abstract function setMediaURI($val);
+  public abstract function getInstanceURI();
+  public abstract function setInstanceURI($val);
   public abstract function getServiceID();
   public abstract function setServiceID($val);
   public abstract function getApiKey();
@@ -356,8 +358,8 @@ abstract class TWDocs {
   public abstract function getDefaultDocPage();
   public abstract function setDefaultDocPage($val);
 
-  function getApiURL() {
-    return $this->getBaseURI()."api.php";
+  private function getApiURL() {
+    return $this->getMediaURI()."/api.php";
   }
 }
 
