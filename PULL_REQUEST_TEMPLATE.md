@@ -27,7 +27,7 @@ For example: UXTALK-104 Refactor web consumer to handle API prefix removal
  
 * [ ] Renders and functions properly in all supported browsers
 * [ ] Automated tests written and passing
-* [ ] Documentation created or updated, including [talk_api_swagger.yaml](/talk-web/packages/talk-web-api/talk_api_swagger.yaml)
+* [ ] Documentation created or updated, including
 * [ ] There is a single commit with a [Good commit message](https://github.com/torvalds/subsurface-for-dirk/blob/master/README#L92) that starts with the Jira ticket
  
 <!-- If any of the above need further details, you should include those here. -->
