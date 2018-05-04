@@ -113,7 +113,6 @@ abstract class TWDocs {
    */
   public function render( $pageid, $content )
   {
-	file_put_contents("/tmp/docsRender", "$content") ;
     TWDocs::getLogger()->logStatus( "*****STARTING A NEW QUERY*****." ) ;
 
     $this->pageid = $pageid ;
@@ -251,7 +250,8 @@ abstract class TWDocs {
           $fulldir = "/var/www/html/tw.rpi.edu/media/files" ;
           $fullpath = $fulldir."/latest/".$oldName ;
           $actualuri = $base."latest/".$oldName ;
-          $page = "http://tw.rpi.edu/web/doc/Document?uri=$actualuri" ;
+          $defaultdocpage = $this->getDefaultDocPage() ;
+          $page = $defaultdocpage."?uri=$actualuri" ;
         }
       }
     }
@@ -305,7 +305,6 @@ abstract class TWDocs {
 
   private function doesFileExist($href) {
     $result = $this->makeApiCall("checkInUse",array("file"=>$href));
-    file_put_contents("/tmp/fileexists", $result);
     if($result===null || $result->response==FALSE) return FALSE;
     return TRUE;
   }
@@ -328,7 +327,6 @@ abstract class TWDocs {
     foreach($args as $param => $value) {
       $msg .= "&$param=".urlencode($value);
     }
-	file_put_contents("/tmp/apiCall", "$msg - " . $this->getApiURL()) ;
     $params = array('http' => array('method' => 'POST',
             'content' => $msg));
     $ctx = stream_context_create($params);
@@ -355,6 +353,8 @@ abstract class TWDocs {
   public abstract function setServiceID($val);
   public abstract function getApiKey();
   public abstract function setApiKey($val);
+  public abstract function getDefaultDocPage();
+  public abstract function setDefaultDocPage($val);
 
   function getApiURL() {
     return $this->getBaseURI()."api.php";
