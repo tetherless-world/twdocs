@@ -291,12 +291,9 @@ abstract class TWDocs {
         if($class=="") {
           $uri = preg_replace('/\s/','_',$uri);
           $value .= " [<a href=\"$uri\">Download</a>]";
+        } else if ($this->canUpload()) {
+          $value .= " [<a $class style=\"cursor:pointer;\" onclick=\"uploadForm('".$params["href"]."');\">Upload</a>]";
         }
-        /*
-        } else if(node_access("update",$node)) {
-          $value .= " [<a onclick=\"uploadForm('".$params["href"]."');\">Upload</a>]";
-        }
-        */
       }
     }
     return $value;
@@ -357,6 +354,8 @@ abstract class TWDocs {
   public abstract function setApiKey($val);
   public abstract function getDefaultDocPage();
   public abstract function setDefaultDocPage($val);
+
+  public abstract function canUpload();
 
   private function getApiURL() {
     return $this->getMediaURI()."/api.php";
