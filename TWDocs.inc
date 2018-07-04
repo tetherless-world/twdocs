@@ -143,7 +143,7 @@ abstract class TWDocs {
         $this->curTag = $desc ;
 
         // save off the current uri
-        if( array_key_exists("uri", $desc) && $desc["uri"] != "" )
+        if( $desc["uri"] && $desc["uri"] != "" )
         {
           $this->curReferer = $desc["uri"] ;
         }
@@ -259,12 +259,13 @@ abstract class TWDocs {
     } else {
       $id = "";
     }
+    $value = "<div style=\"display:inline\">";
     switch($params["mode"]) {
       case "link":
-        $value = "<a $id$class ".(isset($page)?"href=\"":"");
+        $value .= "<a $id$class ".(isset($page)?"href=\"":"");
         break;
       case "img":
-        $value = "<a href=\"$uri\"><img $id$class src=\"$uri\"";
+        $value .= "<a href=\"$uri\"><img $id$class src=\"$uri\"";
         if(isset($params["style"])) {
           $value .= ' style="'.$params["style"].'" ';
         }
@@ -274,7 +275,7 @@ abstract class TWDocs {
         unset($page);
         break;
       case "embed":
-        $value = "<object $id$class ".(isset($page)?"data=\"":"");
+        $value .= "<object $id$class ".(isset($page)?"data=\"":"");
         break;
     }
     $value .= (isset($page) ? $page."\" " : "");
@@ -292,10 +293,13 @@ abstract class TWDocs {
           $uri = preg_replace('/\s/','_',$uri);
           $value .= " [<a href=\"$uri\">Download</a>]";
         } else if ($this->canUpload()) {
-          $value .= " [<a $class style=\"cursor:pointer;\" onclick=\"uploadForm('".$params["href"]."');\">Upload</a>]";
+          $id = round(microtime(true) * 1000);
+          $uid = \Drupal::currentUser()->getUsername();
+          $value .= "<div id=\"id" . $id . "\" style=\"display: inline;\"> [<a $class style=\"cursor:pointer;\" onclick=\"((event) => twOpenDialog('id" . $id .  "', '" . $params["href"] . "', '" . $uid . "', event))(event);\">Upload</a>]</div>";
         }
       }
     }
+    $value .= "</div>";
     return $value;
   }
 
