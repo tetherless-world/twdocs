@@ -1,0 +1,33 @@
+<Files index.php>
+	AuthType Basic
+	AuthName "Tetherless World Constellation LDAP"
+	AuthBasicProvider ldap
+	AuthzLDAPAuthoritative on
+	AuthLDAPURL "ldap://ldap.tw.rpi.edu orion.tw.rpi.edu/ou=Users,dc=tw,dc=rpi,dc=edu?uid" TLS
+	AuthLDAPBindDN uid=accountAuth,ou=System,dc=tw,dc=rpi,dc=edu
+	AuthLDAPBindPassword crud-ak-mov-foo4
+	Require valid-user
+</Files>
+<Files submit.php>
+	AuthType Basic
+	AuthName "Tetherless World Constellation LDAP"
+	AuthBasicProvider ldap
+	AuthzLDAPAuthoritative on
+	AuthLDAPURL "ldap://ldap.tw.rpi.edu orion.tw.rpi.edu/ou=Users,dc=tw,dc=rpi,dc=edu?uid" TLS
+	AuthLDAPBindDN uid=accountAuth,ou=System,dc=tw,dc=rpi,dc=edu
+	AuthLDAPBindPassword crud-ak-mov-foo4
+	Require valid-user
+</Files>
+
+RewriteEngine on
+#RewriteBase /media
+RewriteRule ^$ index.php [L]
+RewriteRule ^index.php - [L]
+RewriteRule ^access.php - [L]
+RewriteRule ^submit.php - [L]
+RewriteRule ^api.php - [L]
+RewriteRule ^.*\.js - [L]
+RewriteRule !^(index.php.+) - [C]
+RewriteRule !^(access.php.+) - [C]
+RewriteCond %{QUERY_STRING} ^(.*)$
+RewriteRule ^(.*)$ access.php/$1?%1 [L]
