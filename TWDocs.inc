@@ -143,7 +143,7 @@ abstract class TWDocs {
         $this->curTag = $desc ;
 
         // save off the current uri
-        if( $desc["uri"] && $desc["uri"] != "" )
+        if( array_key_exists("uri", $desc) && $desc["uri"] != "" )
         {
           $this->curReferer = $desc["uri"] ;
         }
