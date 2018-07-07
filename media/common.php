@@ -2,25 +2,7 @@
 
 define('MEDIA_DEBUG',FALSE);
 
-function error($num) {
-  switch($num) {
-  case 400:
-    header("HTTP/1.1 400 Bad Request");
-    break;
-  case 403:
-    header("HTTP/1.1 403 Forbidden");
-    break;
-  default:
-    header("HTTP/1.1 500 Internal Server Error");
-    break;
-  }
-  die;
-}
-
 function handleFileUpload($tmpPath, $file, $creator, $oldName = NULL, $title = NULL) {
-  // For debugging purposes, if an error occurs we'll see the dump
-  header("Content-type: text/html");
-
   $file = preg_replace("/ /","_",$file);
   if($oldName === NULL) $oldName = $file;
 
@@ -37,8 +19,9 @@ function handleFileUpload($tmpPath, $file, $creator, $oldName = NULL, $title = N
   else {
     exec("mkdir -p 'files/".$path."'",$text,$result);
     if($result!=0) {
-      echo '{"success":false,"error":"unable to create target directory"}';
-      die;
+      http_response_code(500);
+      echo "{ \"error\": \"Upload of file was unsuccessful. Error in path.\" }";
+      return;
     }
   }
 
@@ -48,10 +31,8 @@ function handleFileUpload($tmpPath, $file, $creator, $oldName = NULL, $title = N
   }
   else {
     if(!move_uploaded_file($tmpPath, "files/$path/$file"))
-      error(500);
-    /*
-    exec("openssl enc -d -base64 -in '$tmpPath' -out 'files/$path/$file'");
-    */
+      http_response_code(500);
+      echo "{ \"error\": \"Upload of file was unsuccessful. Error in move.\" }";
   }
 
   // Create or update the symlink in the "latest" directory
@@ -137,5 +118,6 @@ function handleFileUpload($tmpPath, $file, $creator, $oldName = NULL, $title = N
     $response = file_get_contents(UPDATE,false,$ctx);
   }
 
-  return array("success"=>true,"persist"=>"$base$path/$file","latest"=>$base."latest/$file");
+  http_response_code(200);
+  echo "{ \"success\": \"{ \"persist\": \"$base$path/$file\", \"latest\": \"latest/$file\" } }";
 }
