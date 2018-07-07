@@ -30,9 +30,12 @@ function handleFileUpload($tmpPath, $file, $creator, $oldName = NULL, $title = N
     echo "move_upload_file($tmpPath, 'files/$path/$file')<br>";
   }
   else {
-    if(!move_uploaded_file($tmpPath, "files/$path/$file"))
+    $moveResponse = rename($tmpPath, "files/$path/$file");
+    if(!$moveResponse) {
       http_response_code(500);
       echo "{ \"error\": \"Upload of file was unsuccessful. Error in move.\" }";
+      return;
+    }
   }
 
   // Create or update the symlink in the "latest" directory
@@ -119,5 +122,5 @@ function handleFileUpload($tmpPath, $file, $creator, $oldName = NULL, $title = N
   }
 
   http_response_code(200);
-  echo "{ \"success\": \"{ \"persist\": \"$base$path/$file\", \"latest\": \"latest/$file\" } }";
+  echo "{ \"success\": { \"persist\": \"$base$path/$file\", \"latest\": \"latest/$file\" } }";
 }

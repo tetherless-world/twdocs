@@ -20,6 +20,11 @@ $q = "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\r\nSELECT ?uri WHERE { ?uri foaf
 try {
   $result = file_get_contents(ENDPOINT."?query=".urlencode($q));
   $dom = new DOMDocument();
+  if($result == "") {
+    http_response_code(404);
+    echo "{ \"error\": \"Upload of file was unsuccessful. Unable to authorize.\" }";
+    return;
+  }
   $dom->loadXML($result);
   $nodes = $dom->getElementsByTagName("uri");
   if($nodes->length != 1) {
