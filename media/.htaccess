@@ -1,23 +1,23 @@
-<Files index.php>
-	AuthType Basic
-	AuthName "Tetherless World Constellation LDAP"
-	AuthBasicProvider ldap
-	AuthzLDAPAuthoritative on
-	AuthLDAPURL "ldap://ldap.tw.rpi.edu orion.tw.rpi.edu/ou=Users,dc=tw,dc=rpi,dc=edu?uid" TLS
-	AuthLDAPBindDN uid=accountAuth,ou=System,dc=tw,dc=rpi,dc=edu
-	AuthLDAPBindPassword crud-ak-mov-foo4
-	Require valid-user
-</Files>
-<Files submit.php>
-	AuthType Basic
-	AuthName "Tetherless World Constellation LDAP"
-	AuthBasicProvider ldap
-	AuthzLDAPAuthoritative on
-	AuthLDAPURL "ldap://ldap.tw.rpi.edu orion.tw.rpi.edu/ou=Users,dc=tw,dc=rpi,dc=edu?uid" TLS
-	AuthLDAPBindDN uid=accountAuth,ou=System,dc=tw,dc=rpi,dc=edu
-	AuthLDAPBindPassword crud-ak-mov-foo4
-	Require valid-user
-</Files>
+#<Files index.php>
+#	AuthType Basic
+#	AuthName "Tetherless World Constellation LDAP"
+#	AuthBasicProvider ldap
+#	AuthzLDAPAuthoritative on
+#	AuthLDAPURL "ldap://ldap.tw.rpi.edu orion.tw.rpi.edu/ou=Users,dc=tw,dc=rpi,dc=edu?uid" TLS
+#	AuthLDAPBindDN uid=accountAuth,ou=System,dc=tw,dc=rpi,dc=edu
+#	AuthLDAPBindPassword crud-ak-mov-foo4
+#	Require valid-user
+#</Files>
+#<Files submit.php>
+#	AuthType Basic
+#	AuthName "Tetherless World Constellation LDAP"
+#	AuthBasicProvider ldap
+#	AuthzLDAPAuthoritative on
+#	AuthLDAPURL "ldap://ldap.tw.rpi.edu orion.tw.rpi.edu/ou=Users,dc=tw,dc=rpi,dc=edu?uid" TLS
+#	AuthLDAPBindDN uid=accountAuth,ou=System,dc=tw,dc=rpi,dc=edu
+#	AuthLDAPBindPassword crud-ak-mov-foo4
+#	Require valid-user
+#</Files>
 
 RewriteEngine on
 #RewriteBase /media

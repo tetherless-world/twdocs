@@ -71,7 +71,7 @@ function twDoUpload(alt, username, e) {
             data.append('username', username)
             data.append('source', twArrayBufferToBase64(src.target.result))
             let errObj = ''
-            fetch('/~westp/media/submit.php',
+            fetch('/media/submit.php',
                 { method: 'post', body: data }
             ).then(async (response) => {
                 const element = twCloseDialog()
@@ -87,13 +87,15 @@ function twDoUpload(alt, username, e) {
                   })
                 }
                 await getContents()
+                console.log(errObj)
                 const responseObj = JSON.parse(errObj)
                 if (response.status !== 200) {
                   alert(`${responseObj.error}`)
                 } else {
-                  alert('Do something with the result')
+                  location.reload(true)
                 }
             }).catch((((err) => {
+              console.log(err)
               alert('Unable to upload the file, internal error')
             })))
         }
